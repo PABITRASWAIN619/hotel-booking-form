@@ -105,3 +105,87 @@ button{
     flex-direction:column;
     gap:10px;
 }
+/* ===== Welcome Page Design ===== */
+
+.welcome-body{
+    height:100vh;
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(120deg,#1e3a8a,#2563eb);
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.welcome-box{
+    background:white;
+    padding:40px;
+    border-radius:12px;
+    width:380px;
+    text-align:center;
+    box-shadow:0 15px 35px rgba(0,0,0,0.3);
+}
+
+.welcome-box h1{
+    margin-bottom:25px;
+    color:#1e3a8a;
+}
+
+.btn-group{
+    margin-bottom:20px;
+}
+
+.btn-group button{
+    padding:10px 20px;
+    margin:8px;
+    border:none;
+    border-radius:6px;
+    background:#2563eb;
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn-group button:hover{
+    background:#1e40af;
+}
+
+.auth-box{
+    margin-top:15px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.auth-box input{
+    padding:8px;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+.auth-box button{
+    padding:8px;
+    border:none;
+    border-radius:5px;
+    background:#16a34a;
+    color:white;
+    cursor:pointer;
+}
+
+.hidden{
+    display:none;
+}
+
+/* Logout button */
+.logout-btn{
+    position:fixed;
+    top:15px;
+    right:20px;
+    background:red;
+    color:white;
+    border:none;
+    padding:8px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}

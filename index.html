@@ -1,86 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>GrandStay Hotel Booking</title>
-<link rel="stylesheet" href="style.css"/>
+    <title>Welcome | Hotel Booking</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="welcome-body">
 
-<header>
-    <h1>🏨 GrandStay Hotel</h1>
-</header>
+<div class="welcome-box">
+    <h1>Welcome to Hotel Booking</h1>
+<p style="color:gray;">Book your stay with comfort and luxury</p>
 
-<!-- Room Cards -->
-<section class="rooms">
-    <div class="room-card">
-    <img src="https://images.unsplash.com/photo-1501117716987-c8e1ecb210b3"
-         onclick="selectRoom('Single',1000)" />
-
-
-    <div class="room-card">
-    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
-         onclick="selectRoom('Double',2000)" />
-
-
-    <div class="room-card">
-    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b"
-         onclick="selectRoom('Suite',3500)" />
-
-</section>
-
-<!-- Main Layout -->
-<div class="main">
-
-    <!-- Booking Form -->
-    <form id="bookingForm">
-        <button onclick="logout()" style="background:red">Logout</button>
-
-        <h2>Book Your Stay</h2>
-
-        <label>Selected Room</label>
-        <input type="text" id="roomType" readonly required />
-
-        <label>Check-in</label>
-        <input type="date" id="checkIn" required />
-
-        <label>Check-out</label>
-        <input type="date" id="checkOut" required />
-
-        <label>Adults</label>
-        <input type="number" id="adults" min="1" value="1" required />
-
-        <label>Children</label>
-        <input type="number" id="children" min="0" value="0" />
-
-        <label>Special Request</label>
-        <textarea id="requests"></textarea>
-
-        <div id="availability"></div>
-
-        <button type="submit">Confirm Booking</button>
-    </form>
-
-    <!-- Live Summary -->
-    <div class="summary">
-        <h3>Booking Summary</h3>
-        <p id="summaryText">Fill details to see summary</p>
-        <h2 id="totalPrice">₹0</h2>
+    <div class="btn-group">
+        <button onclick="showLogin()">Sign In</button>
+        <button onclick="showSignup()">Sign Up</button>
     </div>
 
-</div>
+    <!-- LOGIN -->
+    <div id="loginBox" class="auth-box hidden">
+        <h2>Sign In</h2>
+        <input type="text" id="loginUser" placeholder="Username">
+        <input type="password" id="loginPass" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="loginMsg"></p>
+    </div>
 
-<!-- Success Modal -->
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <h3>Booking Confirmed 🎉</h3>
-        <p id="receipt"></p>
-        <button onclick="downloadReceipt()">Download Receipt</button>
-        <button onclick="closeModal()">Close</button>
+    <!-- SIGNUP -->
+    <div id="signupBox" class="auth-box hidden">
+        <h2>Sign Up</h2>
+        <input type="text" id="signupUser" placeholder="Username">
+        <input type="password" id="signupPass" placeholder="Password">
+        <button onclick="signup()">Signup</button>
+        <p id="signupMsg"></p>
     </div>
 </div>
 
-<script src="script.js"></script>
+<script>
+function showLogin(){
+    loginBox.classList.remove("hidden");
+    signupBox.classList.add("hidden");
+}
+function showSignup(){
+    signupBox.classList.remove("hidden");
+    loginBox.classList.add("hidden");
+}
+
+function login(){
+    fetch("http://localhost:5000/login",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            username:loginUser.value,
+            password:loginPass.value
+        })
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        loginMsg.innerText = data.message;
+        if(data.message==="Login successful"){
+            loginMsg.style.color="green";
+            localStorage.setItem("loggedIn","true");
+            setTimeout(()=>window.location.href="booking.html",1000);
+        } else {
+            loginMsg.style.color="red";
+        }
+    });
+}
+
+function signup(){
+    fetch("http://localhost:5000/signup",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            username:signupUser.value,
+            password:signupPass.value
+        })
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        signupMsg.innerText = data.message;
+        if(data.message==="Signup successful"){
+            signupMsg.style.color="green";
+            localStorage.setItem("loggedIn","true");
+            setTimeout(()=>window.location.href="booking.html",1000);
+        } else {
+            signupMsg.style.color="red";
+        }
+    });
+}
+</script>
+
 </body>
 </html>

@@ -1,3 +1,30 @@
+ if(!localStorage.getItem("loggedIn")){
+    window.location.href = "index.html";
+}
+
+function logout(){
+    localStorage.clear();
+    window.location.href = "index.html";
+}
+
+ // Protect page
+if(!localStorage.getItem("loggedIn")){
+    window.location.href = "index.html";
+}
+
+// Show username
+document.addEventListener("DOMContentLoaded",()=>{
+    const user = localStorage.getItem("user");
+    if(user){
+        document.getElementById("welcomeUser").innerText = "Hi, " + user;
+    }
+});
+
+function logout(){
+    localStorage.clear();
+    window.location.href = "index.html";
+}
+
 // Check login
 if (!localStorage.getItem("loggedIn")) {
     window.location.href = "login.html";
@@ -84,4 +111,15 @@ function downloadReceipt(){
 function logout(){
     localStorage.removeItem("loggedIn");
     window.location.href = "login.html";
+}
+function togglePass(id, icon){
+    const input = document.getElementById(id);
+
+    if(input.type === "password"){
+        input.type = "text";
+        icon.textContent = "🙈";
+    } else {
+        input.type = "password";
+        icon.textContent = "👁";
+    }
 }
