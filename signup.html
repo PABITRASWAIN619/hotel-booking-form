@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Signup</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="auth-box">
+    <h2>Signup</h2>
+    <input type="text" id="user" placeholder="Username">
+    <input type="password" id="pass" placeholder="Password">
+    <button onclick="signup()">Signup</button>
+</div>
+
+<script>
+function signup(){
+    fetch("http://localhost:5000/signup",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            username:user.value,
+            password:pass.value
+        })
+    })
+    .then(res=>res.json())
+    .then(data=>alert(data.message));
+}
+</script>
+</body>
+</html>

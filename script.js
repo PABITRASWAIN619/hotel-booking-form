@@ -1,3 +1,8 @@
+// Check login
+if (!localStorage.getItem("loggedIn")) {
+    window.location.href = "login.html";
+}
+
 let pricePerNight = 0;
 
 const roomType = document.getElementById("roomType");
@@ -75,4 +80,8 @@ function downloadReceipt(){
     a.href = URL.createObjectURL(blob);
     a.download = "booking_receipt.txt";
     a.click();
+}
+function logout(){
+    localStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
 }
