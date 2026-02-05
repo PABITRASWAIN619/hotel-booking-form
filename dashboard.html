@@ -1,0 +1,12 @@
+<h2>Your Bookings</h2>
+<div id="bookings"></div>
+
+<script>
+const token = localStorage.getItem("token");
+fetch("http://localhost:5000/api/bookings/" + JSON.parse(atob(token.split('.')[1])).id)
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("bookings").innerHTML = 
+      data.map(b => `<p>${b.checkIn} → ${b.checkOut}</p>`).join("");
+  });
+</script>

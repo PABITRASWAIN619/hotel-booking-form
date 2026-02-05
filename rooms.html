@@ -1,0 +1,14 @@
+<div id="roomList"></div>
+
+<script>
+fetch("http://localhost:5000/api/rooms")
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("roomList").innerHTML = 
+      data.map(r => `<div>
+        <h3>${r.name}</h3>
+        <p>${r.price}</p>
+        <button onclick="location.href='booking.html?room=${r._id}'">Book</button>
+      </div>`).join("");
+  });
+</script>
