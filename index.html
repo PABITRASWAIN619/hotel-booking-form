@@ -7,7 +7,8 @@
 <body class="welcome-body">
 
 <div class="welcome-box">
-    <h1>Welcome to Hotel Booking</h1>
+    
+    <h1>Welcome to Grandstay Hotel</h1>
 
     <div class="btn-group">
         <button onclick="showLogin()">Sign In</button>
@@ -20,6 +21,8 @@
         <input type="text" id="loginUser" placeholder="Username">
         <input type="password" id="loginPass" placeholder="Password">
         <button onclick="login()">Login</button>
+        <!-- <p>Don't have an account ? <a href ="#signupBox">Signup</a></p> -->
+        <p>Don't have an account ?<a onclick="showLogin()"><span style="color: rgb(17, 55, 170);">signup</span></a></p>
         <p id="loginMsg"></p>
     </div>
 
@@ -28,7 +31,11 @@
         <h2>Sign Up</h2>
         <input type="text" id="signupUser" placeholder="Username">
         <input type="password" id="signupPass" placeholder="Password">
+         <input type="password" id="confirmPass" placeholder="Confirm Password">
         <button onclick="signup()">Signup</button>
+        <!-- <p>Already have an account ? <a href ="#loginBox">login</a></p> -->
+        <!-- <p>Already have an account ?<a onclick="showLogin()">Login</a></p> -->
+        <p>Already have an account ?<a onclick="showLogin()"><span style="color: green;">Login</span></a></p>
         <p id="signupMsg"></p>
     </div>
 </div>
@@ -66,26 +73,54 @@ function login(){
 }
 
 function signup(){
+
+    const user = signupUser.value.trim();
+    const pass = signupPass.value.trim();
+    const confirm = confirmPass.value.trim();
+
+    // ===== VALIDATION BEFORE API CALL =====
+    if(user === "" || pass === "" || confirm === ""){
+        signupMsg.innerText = "All fields are required";
+        signupMsg.style.color = "red";
+        return;
+    }
+
+    if(pass.length < 4){
+        signupMsg.innerText = "Password must be at least 4 characters";
+        signupMsg.style.color = "red";
+        return;
+    }
+
+    if(pass !== confirm){
+        signupMsg.innerText = "Passwords do not match";
+        signupMsg.style.color = "red";
+        return;
+    }
+
+    // ===== API CALL =====
     fetch("http://localhost:5000/signup",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
-            username:signupUser.value,
-            password:signupPass.value
+            username:user,
+            password:pass
         })
     })
     .then(res=>res.json())
     .then(data=>{
         signupMsg.innerText = data.message;
+
         if(data.message==="Signup successful"){
             signupMsg.style.color="green";
             localStorage.setItem("loggedIn","true");
+            localStorage.setItem("userName", user);
             setTimeout(()=>window.location.href="booking.html",1000);
         } else {
             signupMsg.style.color="red";
         }
     });
 }
+
 </script>
 
 </body>

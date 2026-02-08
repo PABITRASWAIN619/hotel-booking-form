@@ -50,7 +50,11 @@ app.post("/login", (req, res) => {
         res.json({ message: "Invalid credentials" });
     }
 });
+app.get("/api/user", (req, res) => {
+    res.json({ name: "Pabitra Swain" }); // later you can use session/login user
+});
 
 app.listen(PORT, () => {
-    console.log("✅ Server running on http://localhost:5000");
+    console.log("✅ Server connected successfully")
+    console.log("✅ Server is running on http://localhost:5000");
 });

@@ -1,65 +1,133 @@
-document.addEventListener("DOMContentLoaded", () => {
+// ================= ALERT FUNCTION =================
+function showAlert(message, type) {
+    const alertBox = document.getElementById("pageAlert");
+    alertBox.innerText = message;
+    alertBox.className = `page-alert ${type}`;
+    alertBox.classList.remove("hidden");
 
-    const name = localStorage.getItem("userName");
+    setTimeout(() => {
+        alertBox.classList.add("hidden");
+    }, 3000);
+}
 
-    if(name){
-        document.getElementById("userName").innerText = name;
-    }
-});
-
-// Protect page
-if(!localStorage.getItem("loggedIn")){
+// ================= PAGE PROTECT =================
+if (!localStorage.getItem("loggedIn")) {
     window.location.href = "index.html";
 }
 
-// Show name
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("userName").innerText =
-        localStorage.getItem("userName");
+// ================= SET TODAY AS MIN CHECKIN =================
+const today = new Date().toISOString().split("T")[0];
+document.getElementById("checkIn").setAttribute("min", today);
+
+// ================= FETCH USER FROM SERVER =================
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const res = await fetch("http://localhost:5000/api/user");
+        const data = await res.json();
+        document.getElementById("userName").innerText = data.name;
+    } catch {
+        document.getElementById("userName").innerText = "Guest";
+    }
 });
 
-function logout(){
+// ================= VARIABLES =================
+let pricePerDay = 0;
+
+const roomType = document.getElementById("roomType");
+const checkIn = document.getElementById("checkIn");
+const checkOut = document.getElementById("checkOut");
+const adults = document.getElementById("adults");
+const children = document.getElementById("children");
+const totalPriceEl = document.getElementById("totalPrice");
+const summaryText = document.getElementById("summaryText");
+
+// ================= ROOM SELECT =================
+function selectRoom(type, price) {
+    roomType.value = type;
+    pricePerDay = price;
+    updateSummary();
+}
+
+// ================= DATE RULES =================
+checkIn.addEventListener("change", () => {
+    checkOut.min = checkIn.value;
+    updateSummary();
+});
+
+checkOut.addEventListener("change", updateSummary);
+adults.addEventListener("input", updateSummary);
+children.addEventListener("input", updateSummary);
+
+// ================= SUMMARY =================
+function updateSummary() {
+    const inDate = new Date(checkIn.value);
+    const outDate = new Date(checkOut.value);
+
+    if (!roomType.value) return;
+
+    if (checkIn.value && checkOut.value) {
+        const days = (outDate - inDate) / (1000 * 60 * 60 * 24);
+
+        if (days <= 0) {
+            summaryText.innerHTML = "Invalid dates selected";
+            totalPriceEl.innerText = "₹0";
+            return;
+        }
+
+        const totalGuests = Number(adults.value) + Number(children.value);
+
+        if (adults.value < 1) {
+            summaryText.innerHTML = "At least 1 adult required";
+            totalPriceEl.innerText = "₹0";
+            return;
+        }
+
+        if (totalGuests > 10) {
+            summaryText.innerHTML = "Maximum 10 guests allowed";
+            totalPriceEl.innerText = "₹0";
+            return;
+        }
+
+        const total = days * pricePerDay;
+
+        summaryText.innerHTML = `
+            Room: ${roomType.value}<br>
+            Days: ${days}<br>
+            Guests: ${totalGuests}
+        `;
+
+        totalPriceEl.innerText = "₹" + total;
+    }
+}
+
+// ================= FORM SUBMIT =================
+document.getElementById("bookingForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const total = totalPriceEl.innerText.replace("₹", "");
+
+    if (total == 0 || !roomType.value) {
+        showAlert("❌ Error: Please select valid room, dates and guests", "error");
+        return;
+    }
+
+    showAlert("✅ Booking Successful!", "success");
+
+    document.getElementById("modal").style.display = "flex";
+
+    document.getElementById("receipt").innerHTML = `
+        Name: ${document.getElementById("userName").innerText}<br>
+        Room: ${roomType.value}<br>
+        Total: ₹${total}
+    `;
+});
+
+// ================= LOGOUT =================
+function logout() {
     localStorage.clear();
     window.location.href = "index.html";
 }
 
-let price = 0;
-
-function selectRoom(type, p){
-    document.getElementById("roomType").value = type;
-    price = p;
-    updateSummary();
-}
-
-function updateSummary(){
-    const inDate = document.getElementById("checkIn").value;
-    const outDate = document.getElementById("checkOut").value;
-
-    if(inDate && outDate){
-        const days = (new Date(outDate) - new Date(inDate))/(1000*60*60*24);
-        const total = days * price;
-
-        document.getElementById("summaryText").innerHTML =
-            `Room: ${roomType.value}<br>Days: ${days}`;
-        document.getElementById("totalPrice").innerText = "₹" + total;
-    }
-}
-
-checkIn.onchange = updateSummary;
-checkOut.onchange = updateSummary;
-
-document.getElementById("bookingForm").addEventListener("submit", function(e){
-    e.preventDefault();
-
-    document.getElementById("modal").style.display="flex";
-
-    document.getElementById("receipt").innerHTML = `
-        Name: ${localStorage.getItem("userName")}<br>
-        Room: ${roomType.value}<br>
-        Total: ${totalPrice.innerText}
-    `;
-});
-
-function closeModal(){
-    document.getElementById("modal").style.display="none";
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
 }

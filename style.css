@@ -139,7 +139,14 @@ form button{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(135deg,#1e4db7,#0d2c7d);
+
+    background: 
+        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+        url("https://images.unsplash.com/photo-1566073771259-6a8506099945");
+        
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
 }
 
 .welcome-box{
@@ -223,4 +230,24 @@ form button{
     form{
         width:90%;
     }
+}
+/* ===== PAGE ALERT ===== */
+.page-alert{
+    position:fixed;
+    top:70px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:12px 25px;
+    border-radius:6px;
+    font-weight:bold;
+    z-index:3000;
+    color:white;
+}
+
+.page-alert.success{
+    background:#16a34a;
+}
+
+.page-alert.error{
+    background:#dc2626;
 }
