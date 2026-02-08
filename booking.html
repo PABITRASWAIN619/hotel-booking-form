@@ -1,20 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GrandStay Hotel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Top Right Welcome -->
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="nav-left">
+        Welcome, <span id="userName"></span>
+    </div>
+
+    <div class="nav-center">
+        🏨 GrandStay Hotel
+    </div>
+
+    <div class="nav-right">
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<!-- Rooms -->
+<section class="rooms">
+    <div class="room-card" onclick="selectRoom('Single',1000)">
+        <img src="https://tse1.mm.bing.net/th/id/OIP.f4711bhT8ALq1k2WVCQLzgHaE8?pid=Api&rs=1&c=1&qlt=95&w=174&h=116">
+        <h3>Single Room ₹1000</h3>
+    </div>
+
+    <div class="room-card" onclick="selectRoom('Double',2000)">
+        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2">
+        <h3>Double Room ₹2000</h3>
+    </div>
+
+    <div class="room-card" onclick="selectRoom('Suite',3500)">
+        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b">
+        <h3>Suite Room ₹3500</h3>
+    </div>
+</section>
+
+<!-- Booking -->
+
+<div class="main">
 <form id="bookingForm">
-  <input type="date" id="checkIn" required>
-  <input type="date" id="checkOut" required>
-  <button>Proceed to Payment</button>
+    <h2>Book Your Stay</h2>
+
+    <label>Selected Room</label>
+    <input type="text" id="roomType" readonly>
+
+    <label>Check-in</label>
+    <input type="date" id="checkIn">
+
+    <label>Check-out</label>
+    <input type="date" id="checkOut">
+
+    <label>Adults</label>
+    <input type="number" id="adults" value="1">
+
+    <label>Children</label>
+    <input type="number" id="children" value="0">
+
+    <button type="submit">Confirm Booking</button>
 </form>
 
-<script>
-const params = new URLSearchParams(location.search);
-const roomId = params.get("room");
+<div class="summary">
+    <h3>Booking Summary</h3>
+    <p id="summaryText">Select room and dates</p>
+    <h2 id="totalPrice">₹0</h2>
+</div>
+</div>
+<!-- Modal -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <h3>Booking Confirmed 🎉</h3>
+        <p id="receipt"></p>
+        <button onclick="closeModal()">Close</button>
+    </div>
+</div>
 
-document.getElementById("bookingForm").onsubmit = async (e) => {
-  e.preventDefault();
-  localStorage.setItem("bookingData", JSON.stringify({
-    room: roomId,
-    checkIn: checkIn.value,
-    checkOut: checkOut.value
-  }));
-  location.href = "payment.html";
-};
-</script>
+<script src="script.js"></script>
+</body>
+</html>

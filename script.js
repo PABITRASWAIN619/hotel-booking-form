@@ -1,23 +1,21 @@
- if(!localStorage.getItem("loggedIn")){
-    window.location.href = "index.html";
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-function logout(){
-    localStorage.clear();
-    window.location.href = "index.html";
-}
+    const name = localStorage.getItem("userName");
 
- // Protect page
+    if(name){
+        document.getElementById("userName").innerText = name;
+    }
+});
+
+// Protect page
 if(!localStorage.getItem("loggedIn")){
     window.location.href = "index.html";
 }
 
-// Show username
-document.addEventListener("DOMContentLoaded",()=>{
-    const user = localStorage.getItem("user");
-    if(user){
-        document.getElementById("welcomeUser").innerText = "Hi, " + user;
-    }
+// Show name
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("userName").innerText =
+        localStorage.getItem("userName");
 });
 
 function logout(){
@@ -25,101 +23,43 @@ function logout(){
     window.location.href = "index.html";
 }
 
-// Check login
-if (!localStorage.getItem("loggedIn")) {
-    window.location.href = "login.html";
-}
+let price = 0;
 
-let pricePerNight = 0;
-
-const roomType = document.getElementById("roomType");
-const checkIn = document.getElementById("checkIn");
-const checkOut = document.getElementById("checkOut");
-const adults = document.getElementById("adults");
-const children = document.getElementById("children");
-const summaryText = document.getElementById("summaryText");
-const totalPriceEl = document.getElementById("totalPrice");
-const availability = document.getElementById("availability");
-const modal = document.getElementById("modal");
-const receipt = document.getElementById("receipt");
-
-const today = new Date().toISOString().split("T")[0];
-checkIn.min = today;
-checkOut.min = today;
-
-function selectRoom(type, price){
-    roomType.value = type;
-    pricePerNight = price;
+function selectRoom(type, p){
+    document.getElementById("roomType").value = type;
+    price = p;
     updateSummary();
 }
 
-checkIn.onchange = () => { checkOut.min = checkIn.value; updateSummary(); };
-checkOut.onchange = updateSummary;
-adults.oninput = updateSummary;
-children.oninput = updateSummary;
-
-function daysBetween(d1,d2){
-    return (new Date(d2)-new Date(d1))/(1000*60*60*24);
-}
-
 function updateSummary(){
-    if(checkIn.value && checkOut.value && roomType.value){
-        const days = daysBetween(checkIn.value, checkOut.value);
+    const inDate = document.getElementById("checkIn").value;
+    const outDate = document.getElementById("checkOut").value;
 
-        if(days <= 0){
-            availability.innerHTML = "❌ Invalid dates";
-            totalPriceEl.innerText = "₹0";
-            return;
-        }
+    if(inDate && outDate){
+        const days = (new Date(outDate) - new Date(inDate))/(1000*60*60*24);
+        const total = days * price;
 
-        availability.innerHTML = "✅ Room Available";
-        const total = days * pricePerNight;
-
-        summaryText.innerHTML = `
-            Room: ${roomType.value}<br>
-            Days: ${days}<br>
-            Adults: ${adults.value}, Children: ${children.value}
-        `;
-
-        totalPriceEl.innerText = "₹" + total;
+        document.getElementById("summaryText").innerHTML =
+            `Room: ${roomType.value}<br>Days: ${days}`;
+        document.getElementById("totalPrice").innerText = "₹" + total;
     }
 }
 
-document.getElementById("bookingForm").onsubmit = function(e){
-    e.preventDefault();
-    modal.style.display="flex";
+checkIn.onchange = updateSummary;
+checkOut.onchange = updateSummary;
 
-    receipt.innerHTML = `
+document.getElementById("bookingForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    document.getElementById("modal").style.display="flex";
+
+    document.getElementById("receipt").innerHTML = `
+        Name: ${localStorage.getItem("userName")}<br>
         Room: ${roomType.value}<br>
-        Check-in: ${checkIn.value}<br>
-        Check-out: ${checkOut.value}<br>
-        Total: ${totalPriceEl.innerText}
+        Total: ${totalPrice.innerText}
     `;
-};
+});
 
 function closeModal(){
-    modal.style.display="none";
-}
-
-function downloadReceipt(){
-    const blob = new Blob([receipt.innerText], {type:"text/plain"});
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "booking_receipt.txt";
-    a.click();
-}
-function logout(){
-    localStorage.removeItem("loggedIn");
-    window.location.href = "login.html";
-}
-function togglePass(id, icon){
-    const input = document.getElementById(id);
-
-    if(input.type === "password"){
-        input.type = "text";
-        icon.textContent = "🙈";
-    } else {
-        input.type = "password";
-        icon.textContent = "👁";
-    }
+    document.getElementById("modal").style.display="none";
 }

@@ -1,111 +1,137 @@
-*{box-sizing:border-box;font-family:Arial;margin:0;padding:0}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-body{background:#f2f6ff}
+/* ================= NAVBAR (BOOKING PAGE) ================= */
 
-header{
-    background:#1e3a8a;
-    color:#fff;
-    padding:15px;
-    text-align:center;
+.navbar{
+    position:fixed;
+    top:0;
+    width:100%;
+    background:#1e293b;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 25px;
+    z-index:1000;
+}
+
+.nav-center{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.navbar button{
+    background:red;
+    border:none;
+    color:white;
+    padding:6px 14px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+/* ================= BOOKING PAGE ================= */
+
+body{
+    background:#f4f6f8;
+    padding-top:70px;
 }
 
 .rooms{
     display:flex;
     justify-content:center;
     gap:20px;
-    padding:20px;
-    flex-wrap:wrap;
+    margin:20px;
 }
 
 .room-card{
-    width:250px;
-    background:#fff;
-    border-radius:10px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
-    cursor:pointer;
+    width:220px;
+    background:white;
+    border-radius:8px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
     text-align:center;
+    cursor:pointer;
     transition:0.3s;
 }
 
-.room-card:hover{transform:scale(1.05)}
+.room-card:hover{
+    transform:scale(1.05);
+}
 
 .room-card img{
     width:100%;
     height:150px;
     object-fit:cover;
-    border-radius:10px 10px 0 0;
+    border-radius:8px 8px 0 0;
 }
 
 .main{
     display:flex;
-    gap:30px;
     justify-content:center;
-    padding:20px;
-    flex-wrap:wrap;
+    gap:40px;
+    margin:30px;
 }
 
 form{
-    width:350px;
-    background:#fff;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
-    display:flex;
-    flex-direction:column;
+    background:white;
+    padding:25px;
+    border-radius:8px;
+    width:300px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
-label{margin-top:10px;font-weight:bold}
-input,textarea{padding:8px;margin-top:5px}
+form input{
+    width:100%;
+    padding:8px;
+    margin:8px 0;
+}
 
-button{
-    margin-top:15px;
+form button{
+    width:100%;
     padding:10px;
-    background:#1e3a8a;
-    color:#fff;
+    background:green;
+    color:white;
     border:none;
+    border-radius:5px;
     cursor:pointer;
 }
 
 .summary{
-    width:300px;
-    background:#fff;
+    background:white;
     padding:20px;
-    border-radius:10px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    border-radius:8px;
+    width:250px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
-#availability{margin-top:10px;font-weight:bold}
+/* ================= MODAL ================= */
 
 .modal{
     display:none;
     position:fixed;
-    top:0;left:0;
-    width:100%;height:100%;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
     background:rgba(0,0,0,0.5);
     justify-content:center;
     align-items:center;
+    z-index:2000;
 }
 
 .modal-content{
-    background:#fff;
-    padding:20px;
-    border-radius:10px;
+    background:white;
+    padding:25px;
+    border-radius:8px;
+    width:300px;
     text-align:center;
 }
-.room-card img{
-    cursor: pointer;
-}
-.auth-box{
-    width:300px;
-    margin:100px auto;
-    padding:20px;
-    background:white;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
-/* ===== Welcome Page Design ===== */
+
+/* ================= HOME / INDEX PAGE ================= */
 
 .welcome-body{
     height:100vh;
@@ -113,8 +139,7 @@ button{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(120deg,#1e3a8a,#2563eb);
-    font-family:Arial, Helvetica, sans-serif;
+    background:linear-gradient(135deg,#1e4db7,#0d2c7d);
 }
 
 .welcome-box{
@@ -144,12 +169,13 @@ button{
     color:white;
     font-size:15px;
     cursor:pointer;
-    transition:0.3s;
 }
 
 .btn-group button:hover{
     background:#1e40af;
 }
+
+/* ================= AUTH FORMS ================= */
 
 .auth-box{
     margin-top:15px;
@@ -165,7 +191,7 @@ button{
 }
 
 .auth-box button{
-    padding:8px;
+    padding:10px;
     border:none;
     border-radius:5px;
     background:#16a34a;
@@ -173,19 +199,28 @@ button{
     cursor:pointer;
 }
 
+/* ================= HIDDEN CLASS ================= */
+
 .hidden{
     display:none;
 }
 
-/* Logout button */
-.logout-btn{
-    position:fixed;
-    top:15px;
-    right:20px;
-    background:red;
-    color:white;
-    border:none;
-    padding:8px 15px;
-    border-radius:5px;
-    cursor:pointer;
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+    .rooms{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .main{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .room-card,
+    .summary,
+    form{
+        width:90%;
+    }
 }
